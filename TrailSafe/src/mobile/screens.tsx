@@ -65,6 +65,45 @@ function IconButton({
   );
 }
 
+function BackButton({
+  fallback = '/home',
+  name = 'arrow-left',
+  style,
+  color,
+}: {
+  fallback?: RoutePath;
+  name?: FeatherName;
+  style?: StyleProp<ViewStyle>;
+  color?: string;
+}) {
+  const router = useRouter();
+
+  const handlePress = () => {
+    if (router.canGoBack()) {
+      router.back();
+      return;
+    }
+
+    router.replace(fallback);
+  };
+
+  return <IconButton name={name} onPress={handlePress} style={style} color={color} />;
+}
+
+function HomeButton({
+  name = 'arrow-left',
+  style,
+  color,
+}: {
+  name?: FeatherName;
+  style?: StyleProp<ViewStyle>;
+  color?: string;
+}) {
+  const router = useRouter();
+
+  return <IconButton name={name} onPress={() => router.dismissTo('/home')} style={style} color={color} />;
+}
+
 function StatusRow({
   icon,
   label,
@@ -173,7 +212,7 @@ export function HomeScreen() {
   const quickActions: Array<{ icon: FeatherName; label: string; path: RoutePath; color: string }> = [
     { icon: 'play', label: 'Start Hike', path: '/map', color: colors.primary },
     { icon: 'map', label: 'Offline Map', path: '/map', color: colors.accent },
-    { icon: 'alert-circle', label: 'Lost Mode', path: '/lost', color: colors.warning },
+    { icon: 'message-square', label: 'AI Agent', path: '/ai', color: colors.warning },
     { icon: 'camera', label: 'AR Guide', path: '/ar', color: colors.secondary },
   ];
   const checklist = [
@@ -268,7 +307,7 @@ export function OfflineMapScreen() {
             <AppButton icon="download" onPress={() => router.push('/download')} style={styles.flex}>
               Update Area
             </AppButton>
-            <IconButton name="home" onPress={() => router.push('/home')} />
+            <HomeButton name="home" />
           </Row>
         </Card>
       }
@@ -278,7 +317,7 @@ export function OfflineMapScreen() {
       </View>
       <View style={styles.mapControls}>
         <Row style={styles.gap}>
-          <IconButton name="arrow-left" onPress={() => router.push('/home')} />
+          <HomeButton />
           <View style={styles.searchBox}>
             <Icon name="search" color={colors.mutedForeground} />
             <TextInput placeholder="Search location..." placeholderTextColor={colors.mutedForeground} style={styles.input} />
@@ -335,7 +374,7 @@ export function DownloadAreaScreen() {
         </AppButton>
       }
     >
-      <IconButton name="arrow-left" onPress={() => router.push('/home')} />
+      <HomeButton />
       <Text style={[text.h1, styles.topGap]}>Download Offline Area</Text>
       <Text style={[text.muted, styles.mutedLead]}>
         Save a compact offline map of your nearby area for use without internet connection.
@@ -463,7 +502,7 @@ export function ARGuidanceScreen() {
             <Text style={styles.glassText}>95%</Text>
           </View>
         </Row>
-        <IconButton name="x" color={colors.white} onPress={() => router.push('/lost')} style={styles.glassButton} />
+        <BackButton name="x" color={colors.white} style={styles.glassButton} />
       </Row>
 
       <View style={styles.arCenter}>
@@ -501,14 +540,13 @@ function Metric({ label, value }: { label: string; value: string }) {
 }
 
 export function AIGuideScreen() {
-  const router = useRouter();
   const [message, setMessage] = useState('');
   const suggestions = ['Am I going the right way?', 'Guide me back to the trailhead', 'What should I do if I stay offline?', 'Remind me to conserve battery'];
 
   return (
     <Screen scroll={false} style={styles.noPadding}>
       <View style={styles.primaryHeader}>
-        <IconButton name="arrow-left" color={colors.white} onPress={() => router.push('/home')} style={styles.headerBack} />
+        <HomeButton color={colors.white} style={styles.headerBack} />
         <Row style={styles.gap}>
           <CircleIcon name="message-square" backgroundColor="#ffffff22" color={colors.white} />
           <View>
@@ -583,7 +621,6 @@ function ChatBubble({ content, time }: { type: 'ai'; content: string; time: stri
 }
 
 export function SOSScreen() {
-  const router = useRouter();
   const [isListening, setIsListening] = useState(false);
 
   return (
@@ -601,7 +638,7 @@ export function SOSScreen() {
       }
     >
       <View style={styles.dangerHeader}>
-        <IconButton name="arrow-left" color={colors.white} onPress={() => router.push('/lost')} style={styles.headerBack} />
+        <BackButton fallback="/lost" color={colors.white} style={styles.headerBack} />
         <Row style={styles.gap}>
           <CircleIcon name="alert-circle" backgroundColor="#ffffff22" color={colors.white} />
           <View>
@@ -670,7 +707,7 @@ export function NavigateScreen() {
         </AppButton>
       }
     >
-      <IconButton name="arrow-left" onPress={() => router.push('/lost')} />
+      <BackButton fallback="/lost" />
       <Row style={[styles.between, styles.topGap]}>
         <Text style={text.h2}>Navigation</Text>
         <Badge tone="success">On Track</Badge>
