@@ -17,6 +17,7 @@ import type { AppState, ChatMessage, SOSPayload } from '../shared/types'
 import { speak } from './voiceService'
 import { triggerSOS } from './sosService'
 import { sendMessage } from '../agent/survivalAgent'
+import { startRecording, stopRecordingAndTranscribe } from './speechToTextService'
 
 const MOCK_AGENT = process.env.EXPO_PUBLIC_MOCK_AGENT === 'true'
 
@@ -30,6 +31,8 @@ export default function SurvivalChat({ appState }: Props) {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [input, setInput] = useState('')
   const [sending, setSending] = useState(false)
+  const [recording, setRecording] = useState(false)
+  const [transcribing, setTranscribing] = useState(false)
   const [sosModalVisible, setSosModalVisible] = useState(false)
   const [sosSending, setSosSending] = useState(false)
 
@@ -41,11 +44,8 @@ export default function SurvivalChat({ appState }: Props) {
     setMessages((prev) => [...prev, msg])
   }, [])
 
-  const onSend = useCallback(async () => {
-    const text = input.trim()
+  const sendText = useCallback(async (text: string) => {
     if (!text || sending) return
-
-    setInput('')
     setSending(true)
 
     const userMsg: ChatMessage = {
@@ -69,7 +69,7 @@ export default function SurvivalChat({ appState }: Props) {
       }
       addMessage(assistantMsg)
       await speak(reply, appState.isOffline)
-    } catch (err) {
+    } catch {
       addMessage({
         id: (Date.now() + 1).toString(),
         role: 'assistant',
@@ -79,7 +79,31 @@ export default function SurvivalChat({ appState }: Props) {
     } finally {
       setSending(false)
     }
-  }, [input, sending, appState, messages, addMessage])
+  }, [sending, appState, messages, addMessage])
+
+  const onSend = useCallback(async () => {
+    const text = input.trim()
+    if (!text) return
+    setInput('')
+    await sendText(text)
+  }, [input, sendText])
+
+  const onMicPress = useCallback(async () => {
+    if (recording) {
+      setRecording(false)
+      setTranscribing(true)
+      const text = await stopRecordingAndTranscribe(appState.isOffline)
+      setTranscribing(false)
+      if (text) await sendText(text)
+    } else {
+      try {
+        await startRecording()
+        setRecording(true)
+      } catch {
+        Alert.alert('Microphone Error', 'Could not access microphone.')
+      }
+    }
+  }, [recording, appState.isOffline, sendText])
 
   const onSOSPressIn = useCallback(() => {
     setSosProgress(true)
@@ -155,16 +179,27 @@ export default function SurvivalChat({ appState }: Props) {
           style={styles.input}
           value={input}
           onChangeText={setInput}
-          placeholder="Ask TrailSafe…"
-          placeholderTextColor="#999"
-          editable={!sending}
+          placeholder={recording ? 'Listening…' : 'Ask TrailSafe…'}
+          placeholderTextColor={recording ? '#e74c3c' : '#999'}
+          editable={!sending && !recording && !transcribing}
           onSubmitEditing={onSend}
           returnKeyType="send"
         />
         <TouchableOpacity
-          style={[styles.sendBtn, sending && styles.sendBtnDisabled]}
+          style={[styles.micBtn, recording && styles.micBtnActive, (sending || transcribing) && styles.micBtnDisabled]}
+          onPress={onMicPress}
+          disabled={sending || transcribing}
+        >
+          {transcribing ? (
+            <ActivityIndicator color="#fff" size="small" />
+          ) : (
+            <Text style={styles.micBtnText}>{recording ? '⏹' : '🎤'}</Text>
+          )}
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.sendBtn, (sending || recording || transcribing) && styles.sendBtnDisabled]}
           onPress={onSend}
-          disabled={sending}
+          disabled={sending || recording || transcribing}
         >
           {sending ? (
             <ActivityIndicator color="#fff" size="small" />
@@ -245,6 +280,11 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     fontSize: 15,
   },
+  micBtn: { backgroundColor: '#333', borderRadius: 20, width: 44, height: 44, alignItems: 'center', justifyContent: 'center' },
+  micBtnActive: { backgroundColor: '#c0392b' },
+  micBtnDisabled: { opacity: 0.5 },
+  micBtnText: { fontSize: 20 },
+
   sendBtn: { backgroundColor: '#1a6ef5', borderRadius: 20, paddingHorizontal: 18, justifyContent: 'center' },
   sendBtnDisabled: { opacity: 0.5 },
   sendBtnText: { color: '#fff', fontWeight: '600', fontSize: 15 },

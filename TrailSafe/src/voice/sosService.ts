@@ -5,6 +5,7 @@ import type { SOSPayload } from '../shared/types'
 const WORLD_APP_ID = process.env.EXPO_PUBLIC_WORLD_APP_ID ?? ''
 const WORLD_ACTION = process.env.EXPO_PUBLIC_WORLD_ACTION ?? 'trailsafe-sos'
 const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL ?? ''
+const MOCK_SOS = process.env.EXPO_PUBLIC_MOCK_SOS === 'true'
 
 const KEY_LAST = '@trailsafe/sos/last'
 const KEY_QUEUE = '@trailsafe/sos/queue'
@@ -38,6 +39,11 @@ export async function verifyHumanWithWorldID(): Promise<boolean> {
 }
 
 export async function triggerSOS(payload: SOSPayload): Promise<void> {
+  if (MOCK_SOS) {
+    console.log('[sos] mock — would send payload:', JSON.stringify(payload))
+    return
+  }
+
   // persist immediately so it survives a crash
   await AsyncStorage.setItem(KEY_LAST, JSON.stringify(payload))
 
