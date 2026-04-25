@@ -95,6 +95,9 @@ export const styles = StyleSheet.create({
     padding: 24,
     paddingBottom: 20,
   },
+  aiHero: {
+    position: 'relative',
+  },
   whiteText: {
     color: colors.white,
   },
@@ -381,6 +384,14 @@ export const styles = StyleSheet.create({
     backgroundColor: '#ffffff22',
     borderColor: '#ffffff33',
   },
+  headerClose: {
+    alignSelf: 'flex-end',
+  },
+  aiHeaderClose: {
+    position: 'absolute',
+    right: 24,
+    zIndex: 1,
+  },
   headerPill: {
     alignItems: 'center',
     backgroundColor: '#ffffff22',
@@ -395,7 +406,11 @@ export const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '700',
   },
+  chatScrollContent: {
+    flexGrow: 1,
+  },
   chatContent: {
+    flexGrow: 1,
     gap: 16,
     padding: 24,
   },
