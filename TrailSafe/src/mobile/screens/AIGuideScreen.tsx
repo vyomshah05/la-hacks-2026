@@ -1,17 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Keyboard, Platform, Pressable, ScrollView, Text, TextInput, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HomeButton, IconButton, Screen } from '../components';
+import { useChat } from '../../agent/useChat';
 import { styles } from '../styles';
 import { colors } from '../theme';
-import { Card, CircleIcon, Icon, Row, text } from '../ui';
+import { Card, CircleIcon, Row, text } from '../ui';
 
 export function AIGuideScreen() {
-  const [message, setMessage] = useState('');
+  const [inputMessage, setInputMessage] = useState('');
   const [keyboardOffset, setKeyboardOffset] = useState(0);
   const { height: windowHeight } = useWindowDimensions();
   const insets = useSafeAreaInsets();
+  const scrollViewRef = useRef<ScrollView>(null);
+  const { messages, isLoading, send } = useChat();
   const suggestions = ['Am I going the right way?', 'Guide me back to the trailhead', 'What should I do if I stay offline?', 'Remind me to conserve battery'];
 
   useEffect(() => {
@@ -32,6 +35,12 @@ export function AIGuideScreen() {
     };
   }, [insets.bottom, windowHeight]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      scrollViewRef.current?.scrollToEnd({ animated: true });
+    }, 100);
+  }, [messages]);
+
   return (
     <>
       <StatusBar style="light" backgroundColor={colors.primary} translucent={false} />
@@ -44,42 +53,59 @@ export function AIGuideScreen() {
 
         <View style={[styles.flex, keyboardOffset > 0 ? { paddingBottom: keyboardOffset } : null]}>
           <ScrollView
+            ref={scrollViewRef}
             contentContainerStyle={styles.chatScrollContent}
             keyboardDismissMode="none"
             keyboardShouldPersistTaps="handled"
           >
             <Pressable onPress={Keyboard.dismiss} style={styles.chatContent}>
-              <ChatBubble type="ai" content="Hi! I'm your AI guide. I can help you navigate back to safety using your offline map and location history. How can I assist you?" time="10:23 AM" />
-              <View style={styles.tipBox}>
-                <Row style={styles.gap}>
-                  <Icon name="zap" color={colors.accent} />
-                  <View style={styles.flex}>
-                    <Text style={text.body}>Safety Tip</Text>
-                    <Text style={text.muted}>Stay hydrated and conserve your phone's battery. Your offline map is ready and your last known location has been saved.</Text>
-                    <Text style={text.small}>10:24 AM</Text>
+              {messages.map((msg) => (
+                <ChatBubble
+                  key={msg.id}
+                  role={msg.role}
+                  content={msg.text}
+                  time={new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                />
+              ))}
+              {messages.length === 1 && (
+                <>
+                  <Text style={text.small}>Suggested questions</Text>
+                  <View style={styles.grid}>
+                    {suggestions.map((suggestion) => (
+                      <Pressable
+                        key={suggestion}
+                        style={styles.suggestion}
+                        onPress={() => send(suggestion)}
+                        disabled={isLoading}
+                      >
+                        <Text style={text.body}>{suggestion}</Text>
+                      </Pressable>
+                    ))}
                   </View>
-                </Row>
-              </View>
-              <Text style={text.small}>Suggested questions</Text>
-              <View style={styles.grid}>
-                {suggestions.map((suggestion) => (
-                  <Pressable key={suggestion} style={styles.suggestion}>
-                    <Text style={text.body}>{suggestion}</Text>
-                  </Pressable>
-                ))}
-              </View>
+                </>
+              )}
             </Pressable>
           </ScrollView>
 
           <SafeAreaView edges={['bottom']} style={styles.chatInputBar}>
             <TextInput
-              value={message}
-              onChangeText={setMessage}
+              value={inputMessage}
+              onChangeText={setInputMessage}
               placeholder="Ask your AI guide..."
               placeholderTextColor={colors.mutedForeground}
               style={styles.chatInput}
+              editable={!isLoading}
             />
-            <IconButton name="send" color={colors.white} onPress={() => setMessage('')} style={styles.sendButton} />
+            <IconButton
+              name="send"
+              color={colors.white}
+              onPress={() => {
+                if (isLoading || !inputMessage.trim()) return;
+                send(inputMessage);
+                setInputMessage('');
+              }}
+              style={[styles.sendButton, (isLoading || !inputMessage.trim()) && { opacity: 0.5 }]}
+            />
           </SafeAreaView>
         </View>
       </Screen>
@@ -87,7 +113,28 @@ export function AIGuideScreen() {
   );
 }
 
-function ChatBubble({ content, time }: { type: 'ai'; content: string; time: string }) {
+function ChatBubble({
+  role,
+  content,
+  time,
+}: {
+  role: 'user' | 'assistant';
+  content: string;
+  time: string;
+}) {
+  if (role === 'user') {
+    return (
+      <Row style={[styles.chatRow, { justifyContent: 'flex-end' }]}>
+        <View style={[styles.flex, { alignItems: 'flex-end' }]}>
+          <Card style={[styles.chatBubble, { backgroundColor: colors.primary }]}>
+            <Text style={[text.body, { color: colors.white }]}>{content}</Text>
+          </Card>
+          <Text style={text.small}>{time}</Text>
+        </View>
+      </Row>
+    );
+  }
+
   return (
     <Row style={styles.chatRow}>
       <CircleIcon name="message-square" backgroundColor={colors.primary} color={colors.white} size={16} style={styles.chatAvatar} />
