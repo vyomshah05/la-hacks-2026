@@ -6,6 +6,12 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.background,
     flex: 1,
   },
+  screenBackground: {
+    backgroundColor: colors.background,
+  },
+  homeScrollBackground: {
+    backgroundColor: colors.primary,
+  },
   content: {
     gap: 20,
     padding: spacing.screenX,
@@ -19,6 +25,9 @@ export const styles = StyleSheet.create({
   padded: {
     gap: 20,
     padding: spacing.screenX,
+  },
+  homeBody: {
+    backgroundColor: colors.background,
   },
   flex: {
     flex: 1,
@@ -84,7 +93,7 @@ export const styles = StyleSheet.create({
   homeHero: {
     backgroundColor: colors.primary,
     padding: 24,
-    paddingBottom: 44,
+    paddingBottom: 20,
   },
   whiteText: {
     color: colors.white,
@@ -98,6 +107,9 @@ export const styles = StyleSheet.create({
     shadowColor: colors.black,
     shadowOpacity: 0.12,
     shadowRadius: 18,
+  },
+  homeStatusCard: {
+    marginTop: 12,
   },
   statusRow: {
     justifyContent: 'space-between',
