@@ -1,5 +1,5 @@
 // Stub — replace with real AI Brain implementation.
-// Expected by SurvivalChat: sendMessage(text, appState, history) => Promise<string>
+// Expected: sendMessage(text, appState, history) => Promise<string>
 import type { AppState, ChatMessage } from '../shared/types'
 
 export async function sendMessage(
