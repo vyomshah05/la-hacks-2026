@@ -6,6 +6,10 @@ This is a code bundle for Design Trail Safe. The original project is available a
 
 ## Running the code
 
+```sh
+cd TrailSafe
+```
+
 Run `npm i` to install the dependencies.
 Run `npm run dev` to start Expo.
 
