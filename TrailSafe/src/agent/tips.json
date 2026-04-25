@@ -1,0 +1,102 @@
+[
+  {
+    "trigger": "broken_bone",
+    "keywords": ["broken", "fracture", "bone", "leg", "arm", "snap", "limb", "splint"],
+    "response": "Do not move the limb. Splint it with a stick and cloth above and below the break to immobilize the joints. Keep the limb elevated if possible and stay still to avoid worsening the injury. Signal for rescue and conserve energy."
+  },
+  {
+    "trigger": "snake_bite",
+    "keywords": ["snake", "bite", "bitten", "venom", "rattler", "viper", "fang"],
+    "response": "Stay calm and keep the bitten limb still and below heart level to slow venom spread. Do not cut, suck, or apply ice or a tourniquet. Remove rings and tight clothing near the bite, mark the swelling edge with a pen, and get to help as quickly and calmly as possible."
+  },
+  {
+    "trigger": "bee_sting",
+    "keywords": ["bee", "wasp", "sting", "stung", "hornet", "swarm", "allergic"],
+    "response": "Scrape the stinger out sideways with a card or fingernail; do not pinch it. Wash the area, apply something cold, and watch for swelling of the face, throat, or trouble breathing. If breathing changes, use an EpiPen if you have one and signal for rescue immediately."
+  },
+  {
+    "trigger": "hypothermia",
+    "keywords": ["cold", "freezing", "hypothermia", "shiver", "shivering", "numb", "frostbite"],
+    "response": "Get out of wind and off the ground onto insulation like leaves or a pack. Replace any wet clothing with dry layers and warm the core, not the limbs first. Sip warm fluids if available, share body heat with a partner, and avoid alcohol or vigorous rewarming of frozen skin."
+  },
+  {
+    "trigger": "flash_flood",
+    "keywords": ["flood", "flash", "rising", "water", "river", "creek", "rain", "canyon"],
+    "response": "Move to high ground immediately, even if it means abandoning gear. Never try to cross moving water above your knees and avoid narrow canyons or dry washes during storms. Once high, stay put, keep dry, and signal rescuers."
+  },
+  {
+    "trigger": "dehydration",
+    "keywords": ["thirsty", "dehydrated", "dehydration", "dry", "water", "drink", "headache"],
+    "response": "Get into shade and rest before searching for water. Sip slowly when you find it; gulping triggers vomiting. Look for water in shaded ravines, at the base of cliffs, or in green vegetation, and purify by boiling for at least one minute or using purification tablets before drinking."
+  },
+  {
+    "trigger": "altitude_sickness",
+    "keywords": ["altitude", "elevation", "mountain", "headache", "nausea", "dizzy", "thin", "air"],
+    "response": "Stop ascending. If symptoms include confusion, severe headache, or trouble breathing at rest, descend immediately even a few hundred feet helps. Hydrate, eat carbs, and avoid alcohol or sleeping pills. Do not push through worsening symptoms."
+  },
+  {
+    "trigger": "wildlife",
+    "keywords": ["bear", "cougar", "mountain", "lion", "wolf", "moose", "animal", "predator"],
+    "response": "Do not run. Make yourself look large, stand your ground, and back away slowly while facing the animal. For bears, speak in a low calm voice; for cougars, shout and throw objects. If a brown bear charges and contact is unavoidable, play dead; for black bears or cougars, fight back aggressively."
+  },
+  {
+    "trigger": "panic",
+    "keywords": ["panic", "scared", "afraid", "anxious", "overwhelmed", "lost", "terrified", "freak"],
+    "response": "Stop and sit down for one minute. Breathe in for four counts, hold for four, exhale for four, and repeat four times. Then take stock: you are alive, you have time, and small calm steps beat big frantic ones. Stay where you are until your head clears."
+  },
+  {
+    "trigger": "phone_battery",
+    "keywords": ["battery", "phone", "dying", "low", "charge", "power", "dead"],
+    "response": "Switch to airplane mode and lower screen brightness to the minimum. Close all apps and disable background services. Save the phone for one final SOS attempt and a single GPS fix; do not waste it on photos or messages until you have signaled for help."
+  },
+  {
+    "trigger": "water_sourcing",
+    "keywords": ["water", "stream", "find", "source", "drink", "thirst", "spring"],
+    "response": "Look for water in low ground, shaded gullies, and at the base of cliffs or rock faces. Follow animal trails or insect swarms downhill at dawn or dusk. Always purify by boiling at least one minute, using tablets, or filtering before drinking, even from clear-looking streams."
+  },
+  {
+    "trigger": "shelter",
+    "keywords": ["shelter", "build", "lean", "shelter", "cover", "sleep", "tarp", "debris"],
+    "response": "Pick a spot that is dry, off the ground, and out of wind, but not in a low gully where cold air pools or water flows. Build a simple lean-to using a fallen branch as a ridgepole and pile debris a foot deep on top for insulation. Insulate the ground beneath you with leaves or pine boughs; cold ground steals more heat than cold air."
+  },
+  {
+    "trigger": "fire",
+    "keywords": ["fire", "spark", "tinder", "flame", "lighter", "burn", "warm", "kindling"],
+    "response": "Gather tinder, kindling, and fuel before striking a spark. Tinder is dry grass, birch bark, or pine resin; kindling is pencil-thin twigs; fuel is wrist-thick branches. Build a small teepee, light from the windward side, and feed it slowly. A small fire that lasts beats a large one that dies."
+  },
+  {
+    "trigger": "signaling",
+    "keywords": ["signal", "rescue", "whistle", "mirror", "smoke", "flare", "help", "sos"],
+    "response": "Three of anything is the international distress signal: three whistle blasts, three fires in a triangle, three flashes. Lay out bright gear or stomp SOS in snow or sand in a clearing visible from above. A signal mirror flashed at aircraft can be seen for miles; aim it via the V of two fingers held toward the target."
+  },
+  {
+    "trigger": "navigation",
+    "keywords": ["lost", "navigate", "compass", "direction", "north", "sun", "stars", "way"],
+    "response": "Stop, sit, and resist the urge to walk. If you must move, follow water downhill; streams lead to rivers and rivers to people. The sun rises east and sets west; in the northern hemisphere, shadows at noon point roughly north. At night, find the North Star using the two stars at the end of the Big Dipper's bowl."
+  },
+  {
+    "trigger": "weather",
+    "keywords": ["weather", "storm", "cloud", "rain", "wind", "lightning", "sky", "forecast"],
+    "response": "Watch the sky and the wind. Tall, anvil-shaped clouds and a sudden drop in temperature mean a thunderstorm is close, often within an hour. If you hear thunder within 30 seconds of lightning, take shelter; avoid ridgelines, lone trees, and open water. A red sky at night usually means fair weather; red sky at morning means a storm is coming."
+  },
+  {
+    "trigger": "food",
+    "keywords": ["food", "hungry", "forage", "eat", "berry", "plant", "edible", "starve"],
+    "response": "You can survive three weeks without food, so prioritize water, shelter, and signaling first. Avoid white or yellow berries, plants with milky sap, three-leafed plants, and anything you cannot positively identify. Insects like grasshoppers and grubs are safe protein when cooked. When in doubt, do not eat it."
+  },
+  {
+    "trigger": "night",
+    "keywords": ["night", "dark", "evening", "sleep", "nightfall", "cold", "predator"],
+    "response": "Stop traveling well before dusk; you need at least an hour to set up shelter and gather firewood. Insulate from the ground, stay dry, and keep a fire or signal ready. Do not wander to investigate sounds; many noises at night are harmless small animals. Stay put, conserve heat, and wait for first light."
+  },
+  {
+    "trigger": "getting_found",
+    "keywords": ["found", "rescue", "search", "sar", "stay", "put", "wait"],
+    "response": "Stay where you are if you have any shelter and water; rescuers search outward from your last known location. Make yourself visible from the air with bright gear, smoke, or stomped patterns in open ground. Conserve your phone battery for one well-timed call when you hear searchers, and answer whistle blasts with three of your own."
+  },
+  {
+    "trigger": "first_aid",
+    "keywords": ["bleeding", "wound", "cut", "injury", "blood", "bandage", "hurt"],
+    "response": "Apply firm direct pressure to the wound with the cleanest cloth you have for at least ten minutes without lifting to peek. Elevate the injury above the heart if possible. If pressure does not stop arterial bleeding, apply a tourniquet two inches above the wound, note the time, and signal for urgent rescue."
+  }
+]
